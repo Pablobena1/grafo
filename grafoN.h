@@ -6,7 +6,7 @@
 #include "vertice.h"
 #include "nodi.h"
 
-using namespace std;
+using namespace std; 
 
 template <class T>
 class Grafo
@@ -19,6 +19,7 @@ class Grafo
         void recorridoAnchura();
         void recorridoProfundidad();
         void despliegaInfo();
+        void cargarDesdeArchivo(string nombreArchivo);
 };
 
 template <class T>
@@ -105,10 +106,88 @@ bool Grafo<T>::borraArco(int origen, int posicion)
 template <class T>
 void Grafo<T>::recorridoAnchura()
 {
+    int 
+}
+
+template <class T>
+void Grafo<T>::recorridoProfundidad()
+{
     
 }
 
+int funcionDispersa(string texto) {
+    int sumaAscii = 0;
+    for (char c : texto) {
+        sumaAscii += c;
+    }
+    int sumaDigitos = 6 + 2 + 1 + 3 + 8 + 8;
+    return sumaAscii % sumaDigitos;
+}
 
+
+/*template <class T>
+void Grafo<T>::cargarDesdeArchivo(string nombreArchivo) {
+    ifstream archivo(nombreArchivo);
+    string linea;
+
+    // Leer los vértices
+    while (getline(archivo, linea)) {
+        // Detenerse cuando se encuentre la línea de separación
+        if (linea == "-----------------------------") break;
+
+        // Insertar el vértice en el grafo
+        insertarVertice(linea);
+    }
+
+    // Leer los arcos
+    while (getline(archivo, linea)) {
+        // Dividir la línea en origen y destino
+        int posEspacio = linea.find(' ');
+        int origen = stoi(linea.substr(0, posEspacio));
+        int destino = stoi(linea.substr(posEspacio + 1));
+
+        // Insertar el arco en el grafo
+        insertarArco(origen, destino);
+    }
+
+    archivo.close();
+}*/
+
+
+template <class T>
+void Grafo<T>::cargarDesdeArchivo(string nombreArchivo) {
+    ifstream archivo(nombreArchivo);
+    string linea;
+
+    // Leer el valor disperso
+    getline(archivo, linea);
+    int valorDisperso = funcionDispersa(linea);
+
+    // Leer los vértices
+    while (getline(archivo, linea)) {
+        // Detenerse cuando se encuentre la línea de separación
+        if (linea == "-----------------------------") break;
+
+        // Decodificar la información del vértice
+        T infoVertice = decodificar(linea, valorDisperso);
+
+        // Insertar el vértice en el grafo
+        insertarVertice(infoVertice);
+    }
+
+    // Leer los arcos
+    while (getline(archivo, linea)) {
+        // Dividir la línea en origen y destino
+        int posEspacio = linea.find(' ');
+        int origen = stoi(linea.substr(0, posEspacio));
+        int destino = stoi(linea.substr(posEspacio + 1));
+
+        // Insertar el arco en el grafo
+        insertarArco(origen, destino);
+    }
+
+    archivo.close();
+}
 
 
 
@@ -136,3 +215,26 @@ void Grafo<T>::despliegaInfo()
         }
     }
 }
+
+
+// Función de dispersión
+int funcionDispersa(string texto) {
+    int sumaAscii = 0;
+    for (char c : texto) {
+        sumaAscii += c;
+    }
+    int sumaDigitos = 6 + 2 + 1 + 3 + 8 + 8;
+    return sumaAscii % sumaDigitos;
+}
+
+// Función de decodificación
+string decodificar(string textoCodificado, int valorDisperso) {
+    string textoDecodificado;
+    for (char c : textoCodificado) {
+        char decodificado = c - valorDisperso; // Resta el valor disperso al valor ASCII del carácter codificado
+        textoDecodificado += decodificado;
+    }
+    return textoDecodificado;
+}
+
+

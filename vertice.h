@@ -2,7 +2,7 @@
 #include "ListaEncadenada.h"
 #include <iostream>
 
-using namespace std;
+using namespace std; 
 
 // DefiniciÃ³n de la clase Lista Encadenada
 template <typename T>
