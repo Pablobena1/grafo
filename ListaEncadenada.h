@@ -1,42 +1,46 @@
-//  Olivia Maricela BarrÃ³n Cano
-//  CreaciÃ³n: 19/Septiembre/2023
-//  Ãšltima modificaciÃ³n: 20/Septiembre/2023
+//  Olivia Maricela Barrón Cano
+//  Creación: 19/septiembre/2023
+//  Última modificación: 6/octubre/2023
+
+#ifndef LISTAENCADENADA_H
+#define LISTAENCADENADA_H
 
 # include <iostream>
-# include "Nodo.h"
+# include "nodo.h"
 
 using namespace std;
 
-// DefiniciÃ³n de la clase Lista Encadenada
-template <typename T>
+// Definición de la clase Lista Encadenada
+template <class T>
 class ListaEncadenada 
 {
 public:
     ListaEncadenada();            // constructor
     ~ListaEncadenada();           // destructor
     bool estaVacia();
-    bool insertarElementoInicio(T info);
-    bool insertarElementoFinal(T info);
+    bool insertarElementoInicio(const T &info);
+    bool insertarElementoFinal(const T &info);
     int tamanio();
-    int encontrarPosicionElemento(T info);
+    int encontrarPosicionElemento(const T &info);
     void borrarElementoInicio();
     void borrarElementoFinal();
-    void desplegarLista();
+    void desplegarLista(ostream &out);
+    void borrarElemento(int posicion);
     T traerDatosInicio();
+    T* traerDatosPosicion(int posicion);
 
 private:       
-    Nodo<T>* inicio;        // ptr a objeto inicial de la lista
-    Nodo<T>* final;         // ptr a objeto final de la lista
+    Nodo<T>* inicio, *final;        // ptrs a objeto inicial y final de la lista
+
 };
 
-template <typename T>
+template <class T>
 ListaEncadenada<T>::ListaEncadenada()
 {
-    inicio = nullptr;
-    final = nullptr;
+    inicio = final = nullptr;
 }
 
-template <typename T>
+template <class T>
 ListaEncadenada<T>::~ListaEncadenada()
 {
     Nodo<T>* auxiliar;
@@ -50,14 +54,14 @@ ListaEncadenada<T>::~ListaEncadenada()
 
 }
 
-template <typename T>
+template <class T>
 bool ListaEncadenada<T>::estaVacia()
 {
     return inicio == nullptr;
 }
 
-template <typename T>
-bool ListaEncadenada<T>::insertarElementoInicio(T info)
+template <class T>
+bool ListaEncadenada<T>::insertarElementoInicio(const T &info)
 {
     Nodo<T>* nuevo;
     bool bandera;
@@ -68,8 +72,10 @@ bool ListaEncadenada<T>::insertarElementoInicio(T info)
     if (bandera)
     {
         if (inicio == nullptr)
-            inicio = nuevo;
-            final = nuevo;
+        {
+          inicio = nuevo;
+          final = nuevo;
+        }
         else
         {
             nuevo->siguiente = inicio;
@@ -80,11 +86,10 @@ bool ListaEncadenada<T>::insertarElementoInicio(T info)
     return bandera;
 }
 
-template <typename T>
-bool ListaEncadenada<T>::insertarElementoFinal(T info)
+template <class T>
+bool ListaEncadenada<T>::insertarElementoFinal(const T &info)
 {
     Nodo<T>* nuevo;
-    Nodo<T>* auxiliar = inicio;
     bool bandera;
 
     nuevo = new Nodo<T>(info);
@@ -93,22 +98,22 @@ bool ListaEncadenada<T>::insertarElementoFinal(T info)
     if (bandera)
     {
         if (inicio == nullptr)
+        { 
           inicio = nuevo;
           final = nuevo;
+        }
         else
         {
-            while(auxiliar->siguiente != nullptr)
-                auxiliar = auxiliar->siguiente;
-            auxiliar->siguiente = nuevo;
-            final = nuevo;
+           final->siguiente = nuevo;
+           final = nuevo;
         }
     }
 
     return bandera;
 }
 
-template <typename T>
-void ListaEncadenada<T>::desplegarLista()
+template <class T>
+void ListaEncadenada<T>::desplegarLista(ostream &out)
 {
     Nodo<T>* auxiliar = inicio;
     int indice = 0;
@@ -117,15 +122,15 @@ void ListaEncadenada<T>::desplegarLista()
         do
         {
             indice = indice + 1;
-            cout << "La informacion del nodo "<<indice<<" es "<<auxiliar->informacion<<endl;
+            out << "La informacion del nodo "<<indice<<" es "<<auxiliar->informacion<<endl;
             auxiliar = auxiliar ->siguiente;
         }while(auxiliar != nullptr);
     else
-        cout << "La lista esta vacia"<<endl;
+        out << "La lista esta vacia"<<endl;
     
 }
 
-template <typename T>
+template <class T>
 int ListaEncadenada<T>::tamanio()
 {
     Nodo<T>* auxiliar = inicio;
@@ -142,20 +147,21 @@ int ListaEncadenada<T>::tamanio()
     
 }
 
-template <typename T>
+template <class T>
 void ListaEncadenada<T>::borrarElementoFinal()
 {
-    Nodo<T>* auxiliar = inicio;
-
+    Nodo<T> *auxiliar = inicio;
+    
     if (inicio != nullptr)
     {
         if (inicio->siguiente == nullptr)
         {  
             delete inicio;
             inicio = nullptr;
+            final = nullptr;
         }
         else
-        {   while((auxiliar->siguiente)->siguiente != nullptr)
+        {   while( auxiliar->siguiente != final)
                 auxiliar = auxiliar->siguiente;
             delete auxiliar->siguiente;
             auxiliar->siguiente = nullptr;
@@ -165,8 +171,8 @@ void ListaEncadenada<T>::borrarElementoFinal()
 
 }
 
-template <typename T>    
-int ListaEncadenada<T>::encontrarPosicionElemento(T info)
+template <class T>    
+int ListaEncadenada<T>::encontrarPosicionElemento(const T &info)
 {
     Nodo<T>* auxiliar = inicio;
     int indice = 1;
@@ -185,7 +191,7 @@ int ListaEncadenada<T>::encontrarPosicionElemento(T info)
  
 }
 
-template <typename T>  
+template <class T>  
 void ListaEncadenada<T>::borrarElementoInicio()
 {
   Nodo<T>* auxiliar;
@@ -195,14 +201,66 @@ void ListaEncadenada<T>::borrarElementoInicio()
     auxiliar = inicio -> siguiente;
     delete inicio;
     inicio = auxiliar;
+    if (inicio == nullptr)
+     final = nullptr;
   }
 }
 
-template <typename T>     
+template <class T>     
 T ListaEncadenada<T>::traerDatosInicio()
 {
   Nodo<T>* auxiliar;
 
   if (inicio != nullptr)
     return inicio -> informacion;
+  else
+    return T();
 }
+
+template <class T>     
+T* ListaEncadenada<T>::traerDatosPosicion(int posicion)
+{
+  Nodo<T>* auxiliar  = inicio;
+
+  if (posicion == 1)
+    return &(inicio -> informacion);
+  else if (posicion <= tamanio())
+  {
+    for (int i=1; i<tamanio(); i++)
+        auxiliar = &(auxiliar ->siguiente);
+    return auxiliar ->informacion;
+
+  }
+  else
+    return nullptr;
+}
+
+template <class T>     
+void ListaEncadenada<T>::borrarElemento(int posicion)
+{
+  Nodo<T>* auxiliar  = inicio;
+  Nodo<T>* anterior = nullptr;
+  int tamanio = this->tamanio();
+
+  if (posicion == 1)
+  {
+    inicio = auxiliar->siguiente;
+    delete auxiliar;
+  }
+  else if (posicion <= tamanio)
+  {
+    for (int i=1; i<posicion; i++)
+    {  
+        anterior = auxiliar;
+        auxiliar = auxiliar ->siguiente;
+    }
+    anterior->siguiente = auxiliar->siguiente;
+    delete auxiliar;
+    if (posicion == tamanio)
+        final = anterior;
+  }     
+}
+
+
+
+#endif // LISTAENCADENADA_H
