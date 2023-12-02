@@ -1,16 +1,19 @@
-#include "Nodo.h"
+
+
+
 #include "ListaEncadenada.h"
 #include <iostream>
+
 
 using namespace std; 
 
 // DefiniciÃ³n de la clase Lista Encadenada
 template <typename T>
-class vertice
+class Vertice
 {
 public:
-    vertice();
-    vertice(T e);  
+    Vertice();
+    Vertice(T e);  
     void asignaInformacion(T info);
     void asignaEstado(int edo);
     T traeInformacion();
@@ -26,14 +29,14 @@ private:
 };
 
 template <typename T>
-vertice<T>::vertice()
+Vertice<T>::Vertice()
 {
     estado = 0;
 }
 
 
 template <typename T>
-vertice<T>::vertice(T e)
+Vertice<T>::Vertice(T e)
 {
     informacion = e;
     estado = 0;
@@ -41,31 +44,31 @@ vertice<T>::vertice(T e)
 
 
 template <typename T>
-void vertice<T>::asignaInformacion(T info)
+void Vertice<T>::asignaInformacion(T info)
 {
     informacion = info;
 }
 
 template <typename T>
-void vertice<T>::asignaEstado(int edo)
+void Vertice<T>::asignaEstado(int edo)
 {
     estado = edo;
 }
 
 template <typename T>
-T vertice<T>::traeInformacion()
+T Vertice<T>::traeInformacion()
 {
     return informacion;
 }
 
 template <typename T>
-int vertice<T>::traeEstado()
+int Vertice<T>::traeEstado()
 {
     return estado;
 }
 
 template <typename T>
-ListaEncadenada<int> vertice<T>::traeListaAdyacencia()
+ListaEncadenada<int> Vertice<T>::traeListaAdyacencia()
 {
     return listaAdyacencia;
 }
