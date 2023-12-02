@@ -1,10 +1,10 @@
 
-#include "ListaEncadenada.h"
+
 #include <iostream>
 #include <string>
 #include <fstream>
 #include "vertice.h"
-#include "nodi.h"
+#include "ListaEncadenada.h"
 
 using namespace std; 
 
@@ -20,6 +20,14 @@ class Grafo
         void recorridoProfundidad();
         void despliegaInfo();
         void cargarDesdeArchivo(string nombreArchivo);
+        int funcionDispersa(string texto);
+        string decodificar(string textoCodificado, int valorDisperso);
+
+
+    private:
+        ListaEncadenada<Vertice<T>*> vertice;
+
+
 };
 
 template <class T>
@@ -27,8 +35,9 @@ bool Grafo<T>::insertarVertice(T info)
 {
     Nodo<T>* nuevo;
     bool bandera;
+    Vertice<T>* auxiliar(info);
 
-    bandera->insertarElementoFinal(auxiliar);
+    bandera = vertice.insertarElementoFinal(auxiliar);
 
     return bandera;
 }
@@ -41,11 +50,11 @@ bool Grafo<T>::insertarArco(int origen, int destino)
     int tamanio;
     ListaEncadenada<int>* ady;
 
-    tamanio = vertices.tamanio();
+    tamanio = vertice.tamanio();
 
     if ((origen <= tamanio) && (destino <= tamanio) && (tamanio != 0))
     {
-        auxiliar = vertices.traerDatosPosicion(origen);
+        auxiliar = vertice.traerDatosPosicion(origen);
         ady = auxiliar->traerAdyacencias();
         bandera = ady->insertarElementoFinal(destino);
     }
@@ -64,12 +73,12 @@ bool Grafo<T>::borraVertice(int posicion)
 bool bandera;
 int tamanio;
 
-tamanio = vertices.tamanio();
+tamanio = vertice.tamanio();
 
 if (posicion <= tamanio)
 {
     bandera = true;
-    vertices.borrarElemento(posicion);
+    vertice.borrarElemento(posicion);
 }
 else
 {
@@ -87,11 +96,11 @@ bool Grafo<T>::borraArco(int origen, int posicion)
     int tamanio;
     ListaEncadenada<int>* ady;
 
-    tamanio = vertices.tamanio();
+    tamanio = vertice.tamanio();
 
     if ((origen <= tamanio) && (posicion <= tamanio) && (tamanio != 0))
     {
-        auxiliar = vertices.traerDatosPosicion(origen);
+        auxiliar = vertice.traerDatosPosicion(origen);
         ady = auxiliar->traerAdyacencias();
         bandera = ady->borrarElemento(posicion);
     }
@@ -106,22 +115,13 @@ bool Grafo<T>::borraArco(int origen, int posicion)
 template <class T>
 void Grafo<T>::recorridoAnchura()
 {
-    int 
+    
 }
 
 template <class T>
 void Grafo<T>::recorridoProfundidad()
 {
     
-}
-
-int funcionDispersa(string texto) {
-    int sumaAscii = 0;
-    for (char c : texto) {
-        sumaAscii += c;
-    }
-    int sumaDigitos = 6 + 2 + 1 + 3 + 8 + 8;
-    return sumaAscii % sumaDigitos;
 }
 
 
@@ -166,7 +166,7 @@ void Grafo<T>::cargarDesdeArchivo(string nombreArchivo) {
     // Leer los vértices
     while (getline(archivo, linea)) {
         // Detenerse cuando se encuentre la línea de separación
-        if (linea == "-----------------------------") break;
+        if (linea == "---------------------") break;
 
         // Decodificar la información del vértice
         T infoVertice = decodificar(linea, valorDisperso);
@@ -200,11 +200,11 @@ void Grafo<T>::despliegaInfo()
     ListaEncadenada<int>* ady;
     int tamAdy;
 
-    tamanio = vertices.tamanio();
+    tamanio = vertice.tamanio();
 
     for (int i = 1; i <= tamanio; i++)
     {
-        auxiliar = vertices.traerDatosPosicion(i);
+        auxiliar = vertice.traerDatosPosicion(i);
         cout << "Informacion del vertice " << i << ": " << auxiliar->traeInformacion() << endl;
         ady = auxiliar->traerAdyacencias();
         tamAdy = ady->tamanio();
@@ -216,19 +216,17 @@ void Grafo<T>::despliegaInfo()
     }
 }
 
-
-// Función de dispersión
-int funcionDispersa(string texto) {
+template <class T>
+int Grafo<T>::funcionDispersa(string texto) {
     int sumaAscii = 0;
     for (char c : texto) {
         sumaAscii += c;
     }
-    int sumaDigitos = 6 + 2 + 1 + 3 + 8 + 8;
-    return sumaAscii % sumaDigitos;
+    return sumaAscii % (1 + 2 + 3 + 0 + 3 + 2);
 }
 
-// Función de decodificación
-string decodificar(string textoCodificado, int valorDisperso) {
+template <class T>
+string Grafo<T>::decodificar(string textoCodificado, int valorDisperso) {
     string textoDecodificado;
     for (char c : textoCodificado) {
         char decodificado = c - valorDisperso; // Resta el valor disperso al valor ASCII del carácter codificado
