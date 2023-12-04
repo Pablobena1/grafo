@@ -217,23 +217,24 @@ T ListaEncadenada<T>::traerDatosInicio()
     return T();
 }
 
-template <class T>     
+template <class T>
 T* ListaEncadenada<T>::traerDatosPosicion(int posicion)
 {
-  Nodo<T>* auxiliar  = inicio;
+    Nodo<T>* auxiliar = inicio;
 
-  if (posicion == 1)
-    return &(inicio -> informacion);
-  else if (posicion <= tamanio())
-  {
-    for (int i=1; i<tamanio(); i++)
-        auxiliar = &(auxiliar ->siguiente);
-    return auxiliar ->informacion;
-
-  }
-  else
-    return nullptr;
+    if (posicion == 1)
+        return &(inicio->informacion);
+    else if (posicion <= tamanio())
+    {
+        for (int i=1; i<posicion; i++)
+            auxiliar = auxiliar->siguiente;
+        return &(auxiliar->informacion);
+    }
+    else
+        return nullptr;
 }
+
+
 
 template <class T>     
 void ListaEncadenada<T>::borrarElemento(int posicion)

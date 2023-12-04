@@ -6,72 +6,34 @@
 #ifndef NODO_H
 #define NODO_H
 
-// DefiniciÃ³n de la clase nodo
+//  Olivia Maricela Barrón Cano
+//  Creación: 19/septiembre/2023
+//  Última modificación: 6/octubre/2023
+//
 
-template <typename T>
+// Para que reconozca que la clase amiga usa template
+template <typename T> class ListaEncadenada;
+
+// Definición de la clase nodo
+
+template <class T>
 class Nodo
 { 
+    friend class ListaEncadenada<T>; // clase amiga para poder acceder directo a los atributos
 
 public:
-    Nodo(T info);            // constructor
-    void asignaInformacion(T info);
-    void asignaIzquierda(Nodo* izq);
-    void asignaDerecha(Nodo* der);
-    T obtieneInformacion();
-    Nodo* obtieneIzquierda();
-    Nodo* obtieneDerecha();
-    
-
-
+    Nodo(const T &e);            // constructor
 
 private:
     T informacion;             // datos almacenados en este nodo
-    Nodo<T>* izquierda;         // ptr al hijo izquierdo
-    Nodo<T>* derecha;         // ptr al hijo derecho
+    Nodo<T>* siguiente;        // ptr a otro objeto del mismo tipo
 };
 
 template <class T>
-Nodo<T>::Nodo(T info) 
-{ 
-    informacion=info; 
-    izquierda = nullptr;
-    derecha = nullptr;
+Nodo<T>::Nodo(const T &e)      // Se pasa el parámetro por referencia para que no haga copia de objetos en el stack
+{                              // Y se pone const porque en realidad no le vamos a cambiar el contenido al parámetro
+    informacion = e; 
+    siguiente = nullptr;
 }; 
-
-template <class T>
-void Nodo<T>::asignaInformacion(T info)
-{
-    informacion = info;
-}
-    
-template <class T>
-void Nodo<T>::asignaIzquierda(Nodo* izq)
-{
-    izquierda = izq;
-}
-    
-template <class T>
-void Nodo<T>::asignaDerecha(Nodo* der)
-{
-    derecha = der;
-}
-   
-template <class T>
- T Nodo<T>::obtieneInformacion()
- {
-    return informacion;
- }
-    
-template <class T>
-Nodo<T>* Nodo<T>::obtieneIzquierda()
-{
-    return izquierda;
-}
-   
-template <class T>
- Nodo<T>* Nodo<T>::obtieneDerecha()
- {
-    return derecha;
- }
 
 #endif /* NODO_H */

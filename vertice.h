@@ -16,9 +16,9 @@ public:
     Vertice(T e);  
     void asignaInformacion(T info);
     void asignaEstado(int edo);
-    T traeInformacion();
-    int traeEstado();
-    ListaEncadenada<int> traeListaAdyacencia();
+    T traerInformacion();
+    int traerEstado();
+    ListaEncadenada<int>* traerListaAdyacencia();
 
 
 
@@ -56,20 +56,19 @@ void Vertice<T>::asignaEstado(int edo)
 }
 
 template <typename T>
-T Vertice<T>::traeInformacion()
+T Vertice<T>::traerInformacion()
 {
     return informacion;
 }
 
 template <typename T>
-int Vertice<T>::traeEstado()
+int Vertice<T>::traerEstado()
 {
     return estado;
 }
 
 template <typename T>
-ListaEncadenada<int> Vertice<T>::traeListaAdyacencia()
+ListaEncadenada<int>* Vertice<T>::traerListaAdyacencia()
 {
-    return listaAdyacencia;
+    return &listaAdyacencia;
 }
-
